@@ -4,6 +4,9 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Models\Post;
+use DateTime;
+use Faker\Provider\cs_CZ\DateTime as Cs_CZDateTime;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostDao implements PostDaoInterface
@@ -41,25 +44,36 @@ class PostDao implements PostDaoInterface
     return $post;
   }
 
-  public function updatedPostById($request, $postId)
+  public function updatedPostById(Request $request, $postId)
   {
-    //
+    $post = Post::find($postId);
+    $post->title = $request['title'];
+    $post->comment = $request['comment'];
+    $post->status = $request['status'];
+    $post->save();
+    return $post;
    }  
     
 
-  public function deletePostById($postId, $deletedUserId)
-  {
-    $post = Post::find($postId);
-    if ($post) {
-      $post-> $deletedUserId;
-      $post->save();
-      $post->delete();
-      return 'Deleted Successfully!';
-    }
-    $post = Post::find($postId);
-    return $post;
-    return 'Post Not Found!';
-  }
+   public function deletePostById($postId)
+   {
+     $post = Post::find($postId);
+     if ($post) {
+       $post-> $postId;
+       $post->save();
+       $post->delete();
+       return [
+         'deleted_post_id' => $postId,
+         'delete_at' => now()
+       ];
+     }
+     else{
+      return [
+        'message' => 'The given data was invalid.'
+    ];
+     }
+     
+   }
 
   public function uploadPostCSV($validated, $uploadedUserId)
   {

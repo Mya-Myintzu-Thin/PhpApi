@@ -42,9 +42,9 @@ class PostService implements PostServiceInterface
       return $this->postDao->updatedPostById($request, $id);
     }
 
-    public function deletePostById($id, $deletedUserId)
+    public function deletePostById($id)
     {
-      return $this->postDao->deletePostById($id, $deletedUserId);
+      return $this->postDao->deletePostById($id);
     }
 
     public function uploadPostCSV($validated, $uploadedUserId)

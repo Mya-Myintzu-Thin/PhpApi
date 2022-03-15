@@ -20,7 +20,7 @@ class Posts extends Migration
             $table->integer('status')->default(1);
             $table->datetime('created_at')->useCurrent();
             $table->datetime('updated_at')->useCurrent();
-            $table->datetime('deleted_at')->nullable();
+            $table->datetime('deleted_at')->useCurrent();
         });
     }
 

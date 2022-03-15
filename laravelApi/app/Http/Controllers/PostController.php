@@ -79,22 +79,20 @@ class PostController extends Controller
 
     public function updatePostById (Request $request, $postId)
     {  
-
-    $post = Post::find($postId);
-    $post->title = $request['title'];
-    $post->comment = $request['comment'];
-    $post->status = $request['status'];
-    $post->save();
-    return $post;
-      
+      $validator = $request->validated([]);
+      $post = $this->postInterface->updatedPostById($validator, $postId);
+      return response()->json($post);
     }
 
   
-  public function deletePostById($postId)
+    public function deletePostById($postId)
   {
-    $deletedPostId = Post::find($postId);
-    $msg = $this->postInterface->deletePostById($postId, $deletedPostId);
+    
+    $msg = $this->postInterface->deletePostById($postId);
     return response(['message' => $msg]);
+  
+
+    
   }
 
     public function uploadPostCSVFile(PostUploadRequest $request)

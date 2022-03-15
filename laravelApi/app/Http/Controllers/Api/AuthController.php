@@ -53,7 +53,7 @@ class AuthController extends Controller
     $password = $request->password;
     if (Auth::attempt(array('email' => $email, 'password' => $password, ))) {
             $userDetails = array(
-                'post_id' => Auth::id(),
+                'user_id' => Auth::id(),
                 'email' => Auth::User()->email,
             );
         return Response()->json($userDetails);

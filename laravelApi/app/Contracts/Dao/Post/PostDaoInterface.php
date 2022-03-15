@@ -14,7 +14,7 @@ interface PostDaoInterface
 
     public function updatedPostById(Request $request, $id);
 
-    public function deletePostById($postId, $deletedPostId);
+    public function deletePostById($postId);
 
     public function uploadPostCSV($validated, $uploadedUserId);
 
