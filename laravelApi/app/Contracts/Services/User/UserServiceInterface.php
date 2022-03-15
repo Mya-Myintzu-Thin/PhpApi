@@ -6,6 +6,6 @@ interface UserServiceInterface
 {
   public function getUserList();
 
-  public function changeUserPasswordAPI($validated);
+  // public function changeUserPasswordAPI($validated);
 
 }

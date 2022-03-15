@@ -17,3 +17,5 @@ Route::get('/', function () {
 });
 
 Route::get('users/','UserController@index')->name('user#index');
+
+Route::view('forgot_password', 'auth.reset_password')->name('password.reset');

@@ -43,38 +43,7 @@ class PostDao implements PostDaoInterface
 
   public function updatedPostById($request, $postId)
   {
-    // $post = Post::find($postId);
-    // $post->title = $request['title'];
-    // $post->comment = $request['comment'];
-    // if ($request['status']) {
-    //   $post->status = '1';
-    // } else {
-    //   $post->status = '0';
-    // }
-    // $post->updated_post_id = Auth::post()->id;
-    // $post->save();
-    // return $post;
-    $request -> validate([
-      'title'=>'required|max:190',
-      'comment' => 'required|max:190',
-    ]);
-    dd("updatepost");
-
-    $post = Post::find($postId);
-    if($post)
-    {
-      $post -> title = $request->title;
-      $post -> comment = $request->comment;
-      $post->update();
-
-      return response()->json(['message'=>'Post Updated Successfully'],200);
-    }
-    else
-    {
-      return response()->json(['message'=>'No Post Found'],404);
-
-    }
-
+    //
    }  
     
 

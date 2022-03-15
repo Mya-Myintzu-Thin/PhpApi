@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Contracts\Services\Auth\AuthServiceInterface;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
+use Exception;
+use Facade\FlareClient\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 /**
  * This is Authentication Controller for API.
  * This handles the login, logout processing of user.
  */
-class AuthAPIController extends Controller
+class AuthController extends Controller
 {
   /**
    * Auth Interface
@@ -35,15 +39,27 @@ class AuthAPIController extends Controller
    * @param LoginAPIRequest $request Request from user
    * @return Response json response
    */
-  public function login(LoginRequest $request)
+  public function login (Request $request)
   {
-    // validation for request values
-    $validated = $request->validated();
-    $content = $this->authInterface->login($validated);
-    return response()->json(
-      $content['body'],
-      $content['status']
+    $rules = array(
+        'email' => 'required|email',
+        'password' => 'required',
     );
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+        return Response()->json([ 'message' => 'Invalid username or password', 'errors' => $validator->getMessageBag()->toArray()],422);
+    }
+    $email = $request->email;
+    $password = $request->password;
+    if (Auth::attempt(array('email' => $email, 'password' => $password, ))) {
+            $userDetails = array(
+                'post_id' => Auth::id(),
+                'email' => Auth::User()->email,
+            );
+        return Response()->json($userDetails);
+    }else{
+        return Response()->json([ 'message' => 'I can not authenticate.'],401);
+    }
   }
 
   /**
@@ -52,9 +68,9 @@ class AuthAPIController extends Controller
    */
   public function logout()
   {
-    Auth::guard('api')->user()->token()->revoke();
+    Auth::guard('api')->user();
     return response()->json(
-      ['message' => 'User logged out.'],
+      ['message' => 'Success.'],
       JsonResponse::HTTP_OK
     );
   }

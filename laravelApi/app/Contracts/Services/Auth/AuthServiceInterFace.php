@@ -2,7 +2,6 @@
 
 namespace App\Contracts\Services\Auth;
 
-use Illuminate\Http\Request;
 
 /**
  * Interface for authentication service.
@@ -16,5 +15,5 @@ interface AuthServiceInterface
    * @param array $validated Validated fields from request
    * @return array response content and status
    */
-  public function login($validated);
+   public function login($validated);
 }

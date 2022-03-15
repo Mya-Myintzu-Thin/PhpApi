@@ -77,12 +77,16 @@ class PostController extends Controller
         //
     }
 
-    public function updatePostById(PostEditRequest $request, $postId)
-    {
-      // validation for request values
-      $validated = $request->validated();
-      $post = $this->postInterface->updatedPostById($validated, $postId);
-      return response()->json($post);
+    public function updatePostById (Request $request, $postId)
+    {  
+
+    $post = Post::find($postId);
+    $post->title = $request['title'];
+    $post->comment = $request['comment'];
+    $post->status = $request['status'];
+    $post->save();
+    return $post;
+      
     }
 
   
@@ -95,13 +99,15 @@ class PostController extends Controller
 
     public function uploadPostCSVFile(PostUploadRequest $request)
   {
+
     $validated = $request->validated();
     $uploadedUserId = Auth::guard('api')->user()->id;
     $content = $this->postInterface->uploadPostCSV($validated, $uploadedUserId);
+
     if (!$content['isUploaded']) {
       return response()->json(['error' => $content['message']], JsonResponse::HTTP_BAD_REQUEST);
     } else {
       return response()->json(['' => $content['message']]);
     }
   }
-    }
+}

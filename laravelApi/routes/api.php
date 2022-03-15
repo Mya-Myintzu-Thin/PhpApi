@@ -32,9 +32,26 @@ Route::delete('post/delete/{postId}','PostController@deletePostById');
 
 Route::post('/post/upload-csv', 'PostController@uploadPostCSVFile');
 
-Route::post('/password/update', 'UserController@savePassword');
+// Route::post('/password/update', 'UserController@savePassword');
 
-Route::post('login', 'App\Http\Controllers\Api\AuthController@login');
 
-Route::post('logout', 'App\Http\Controllers\Api\AuthController@logout');
+Route::group(['prefix' => 'v1'], function () {
+    // login
+    Route::post('/login', 'Api\AuthController@login')->name('login');
+
+    Route::post('logout', 'Api\AuthController@logout');
+
+});
+
+ Route::post('/forgot-password', 'Api\NewPasswordController@forgotPassword');
+ Route::post('/password/reset', 'Api\NewPasswordController@resetPassword');
+
+
+Route::post('/password/change', 'Api\NewPasswordController@change_password');
+ 
+
+
+
+
+
 

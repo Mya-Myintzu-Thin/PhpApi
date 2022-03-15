@@ -14,6 +14,9 @@ interface AuthDaoInterface
    * @param Request $request request including inputs
    * @return Object created user object
    */
-  public function login($validated);
+   public function login($validated);
+
+  public function saveUser(Request $request);
+
   
 }

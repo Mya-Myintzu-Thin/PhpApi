@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use HasFactory, Notifiable, HasApiTokens;
 
 class Post extends Model
 {
