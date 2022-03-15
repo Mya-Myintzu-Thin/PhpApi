@@ -8,8 +8,6 @@ interface PostDaoInterface
 {
     public function PostCreate($request);
 
-    // public function savePost(Request $request);
-
     public function getPostList();
 
     public function getPostById($id);
