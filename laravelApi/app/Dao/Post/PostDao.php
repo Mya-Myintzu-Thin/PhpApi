@@ -102,6 +102,4 @@ class PostDao implements PostDaoInterface
     return $content;
   }
   
-
-
 }
