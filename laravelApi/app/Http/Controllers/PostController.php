@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Contracts\Services\Post\PostServiceInterface;
-use App\Http\Requests\PostCreateRequest;
-use App\Http\Requests\PostEditAPIRequest;
-use App\Http\Requests\PostEditRequest;
 use App\Http\Requests\PostUploadRequest;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
@@ -48,10 +45,10 @@ class PostController extends Controller
     public function store(Request $request)
     {
       
-    $validator = Validator::make($request->all(), [
-      'title' => 'bail|required|unique:posts|max:255',
-      'comment' => 'required',
-    ]);
+      $validator = Validator::make($request->all(), [
+        'title' => 'bail|required|unique:posts|max:255',
+        'comment' => 'required',
+      ]);
 
     if ($validator->fails()) {
 
@@ -77,22 +74,37 @@ class PostController extends Controller
         //
     }
 
-    public function updatePostById (Request $request, $postId)
+    public function updatePostById (Request $request, Post $postId)
     {  
-      $validator = $request->validated([]);
-      $post = $this->postInterface->updatedPostById($validator, $postId);
-      return response()->json($post);
-    }
+        $validator = Validator::make($request->all(), [
+          'title' => 'bail|required|unique:posts|max:255',
+          'comment' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+          return [
+              'message' => 'The given data was invalid.',
+              'errors' => $validator->errors()
+          ];
+        }
+          $post = $this->postInterface->updatedPostById($request, $postId);
+
+          return $post;
+     }
 
   
     public function deletePostById($postId)
   {
-    
-    $msg = $this->postInterface->deletePostById($postId);
-    return response(['message' => $msg]);
-  
-
-    
+    $post = $this->postInterface->deletePostById($postId);
+    if(!$post){
+      return [
+        'message' => 'The given data was invalid.'
+      ];
+    }
+    return [
+      'deleted_post_id' => $postId,
+      'delete_at' => now()
+    ];
   }
 
     public function uploadPostCSVFile(PostUploadRequest $request)

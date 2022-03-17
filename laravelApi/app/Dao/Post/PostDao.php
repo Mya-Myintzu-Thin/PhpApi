@@ -4,14 +4,11 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Models\Post;
-use DateTime;
-use Faker\Provider\cs_CZ\DateTime as Cs_CZDateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PostDao implements PostDaoInterface
-{ 
-/**
+{
+  /**
    * create post function
    *
    * @return $post object
@@ -22,8 +19,8 @@ class PostDao implements PostDaoInterface
     $post = new Post([
       'title' => $request->get('title'),
       'comment' => $request->get('comment'),
-    //   'created_user_id' => Auth::user()->id,
-    //   'updated_user_id' => Auth::user()->id
+      //   'created_user_id' => Auth::user()->id,
+      //   'updated_user_id' => Auth::user()->id
     ]);
     $post->save();
 
@@ -33,7 +30,7 @@ class PostDao implements PostDaoInterface
   //post list action
   public function getPostList()
   {
-    $users = Post::all();    
+    $users = Post::all();
     return $users;
   }
 
@@ -44,36 +41,26 @@ class PostDao implements PostDaoInterface
     return $post;
   }
 
-  public function updatedPostById(Request $request, $postId)
+  public function updatedPostById($request, $postId)
   {
-    $post = Post::find($postId);
+
+    $post = Post::find($postId)->first();
     $post->title = $request['title'];
     $post->comment = $request['comment'];
     $post->status = $request['status'];
     $post->save();
     return $post;
-   }  
-    
+  }
 
-   public function deletePostById($postId)
-   {
-     $post = Post::find($postId);
-     if ($post) {
-       $post-> $postId;
-       $post->save();
-       $post->delete();
-       return [
-         'deleted_post_id' => $postId,
-         'delete_at' => now()
-       ];
-     }
-     else{
-      return [
-        'message' => 'The given data was invalid.'
-    ];
-     }
-     
-   }
+  public function deletePostById($postId)
+  {
+    $post = Post::find($postId);
+    if ($post) {
+      $post->save();
+      $post->delete();
+    }
+    return $post;
+  }
 
   public function uploadPostCSV($validated, $uploadedUserId)
   {
@@ -115,5 +102,4 @@ class PostDao implements PostDaoInterface
     );
     return $content;
   }
-  
 }

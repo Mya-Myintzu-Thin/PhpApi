@@ -22,13 +22,13 @@ Route::get('/', function () {
 
 Route::post('/create-post', 'PostController@store');
 
-Route::get('/post/list','PostController@getpostlist');
+Route::get('/post/list', 'PostController@getpostlist');
 
 Route::get('post/{postId}', 'PostController@getpostById');
 
-Route::put('post/update/{postId}','PostController@updatePostById');
+Route::put('post/update/{postId}', 'PostController@updatePostById');
 
-Route::delete('post/delete/{postId}','PostController@deletePostById');
+Route::delete('post/delete/{postId}', 'PostController@deletePostById');
 
 Route::post('/post/upload-csv', 'PostController@uploadPostCSVFile');
 
@@ -40,18 +40,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/login', 'Api\AuthController@login')->name('login');
 
     Route::post('logout', 'Api\AuthController@logout');
-
 });
 
- Route::post('/forgot-password', 'Api\NewPasswordController@forgotPassword');
- Route::post('/password/reset', 'Api\NewPasswordController@resetPassword');
+Route::post('/forgot-password', 'Api\NewPasswordController@forgotPassword');
+Route::post('/password/reset', 'Api\NewPasswordController@resetPassword');
 
 
 Route::post('/password/change', 'Api\NewPasswordController@change_password');
- 
-
-
-
-
-
-

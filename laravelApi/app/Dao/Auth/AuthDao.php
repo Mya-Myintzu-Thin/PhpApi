@@ -16,7 +16,6 @@ class AuthDao implements AuthDaoInterface
 
   public function login($validated)
   {
-
   }
   /**
    * To Save User with values from request

@@ -12,7 +12,7 @@ interface PostDaoInterface
 
     public function getPostById($id);
 
-    public function updatedPostById(Request $request, $id);
+    public function updatedPostById(Request $request, $postId);
 
     public function deletePostById($postId);
 
