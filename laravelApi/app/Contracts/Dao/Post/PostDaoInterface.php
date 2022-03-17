@@ -12,14 +12,10 @@ interface PostDaoInterface
 
     public function getPostById($id);
 
-    public function updatedPostById(Request $request, $postId);
+    public function updatedPostById(Request $request, $id);
 
     public function deletePostById($postId);
 
     public function uploadPostCSV($validated, $uploadedUserId);
-
-
-
-
 
 }

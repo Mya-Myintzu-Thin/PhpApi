@@ -14,5 +14,5 @@ interface PostServiceInterface
 
     public function deletePostById($postId);
 
-    public function uploadPostCSV($validated, $uploadedUserId);
+     public function uploadPostCSV($validated, $uploadedUserId);
 }

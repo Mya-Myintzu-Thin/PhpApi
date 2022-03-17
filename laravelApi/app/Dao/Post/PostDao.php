@@ -4,7 +4,6 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Models\Post;
-use Illuminate\Http\Request;
 
 class PostDao implements PostDaoInterface
 {
@@ -64,17 +63,19 @@ class PostDao implements PostDaoInterface
 
   public function uploadPostCSV($validated, $uploadedUserId)
   {
+
     $path =  $validated['csv_file']->getRealPath();
     $csv_data = array_map('str_getcsv', file($path));
     // save post to Database accoding to csv row
     foreach ($csv_data as $index => $row) {
       if (count($row) >= 2) {
         try {
-          $post = new Post();
-          $post->title = $row[0];
-          $post->description = $row[1];
-          $post->created_user_id = $uploadedUserId ?? 1;
-          $post->updated_user_id = $uploadedUserId ?? 1;
+          $post = new Post([
+            'title' => $row[0],
+            'comment' => $row[1],
+            'created_user_id' => $uploadedUserId ?? 1,
+            'updated_user_id' => $uploadedUserId ?? 1,
+          ]);
           $post->save();
         } catch (\Illuminate\Database\QueryException $e) {
           $errorCode = $e->errorInfo[1];
@@ -84,6 +85,7 @@ class PostDao implements PostDaoInterface
               'isUploaded' => false,
               'message' => 'Row number (' . ($index + 1) . ') is duplicated title.'
             );
+            dd($content);
             return $content;
           }
         }
@@ -98,7 +100,7 @@ class PostDao implements PostDaoInterface
     }
     $content = array(
       'isUploaded' => true,
-      'message' => 'Uploaded Successfully!'
+      'message' => 'Your CSV File is Uploaded Successfully!'
     );
     return $content;
   }
